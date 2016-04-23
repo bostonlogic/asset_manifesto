@@ -5,7 +5,11 @@ class AssetManifestoTest < Minitest::Test
     refute_nil ::AssetManifesto::VERSION
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_it_responds_to_generate_all_manifests
+    assert_respond_to AssetManifesto, :generate_all_manifests
+  end
+
+  def test_it_responds_to_asset_pipeline_setup
+    assert_respond_to AssetManifesto, :asset_pipeline_setup
   end
 end

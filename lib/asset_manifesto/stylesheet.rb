@@ -6,7 +6,7 @@ module AssetManifesto
 
     class << self
       def process_stylesheets
-        Dir.glob("#{Rails.root}/public/stylesheets/**/*").each do |stylesheet|
+        Dir.glob("#{Rails.root}/public/stylesheets/**/*.css").each do |stylesheet|
           puts "Processing #{stylesheet}..."
           relative_path = stylesheet.split('/public/').last
           temp_stylesheet = Tempfile.new('temp_stylesheet.css')

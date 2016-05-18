@@ -20,6 +20,17 @@ module AssetManifesto
         end
       end
 
+      def process_stylesheet stylesheet_path
+        puts "Processing #{stylesheet_path}..."
+        temp_stylesheet = Tempfile.new('temp_stylesheet.css')
+        File.open(stylesheet_path, 'r') do |file|
+          file.lines{|line| temp_stylesheet.puts AssetPathInjector.to_asset_pipeline line }
+        end
+        temp_stylesheet.close
+        FileUtils.mv(temp_stylesheet.path, stylesheet_path)
+        puts " - #{stylesheet_path} processed, verify that everything is as expected"
+      end
+
       def create_manifests
         stylesheet_assets.each do |stylesheet_manifest|
           puts "creating stylesheet manifest files..."

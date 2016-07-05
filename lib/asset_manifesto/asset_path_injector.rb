@@ -5,6 +5,7 @@ module AssetManifesto
       asset_path_string = add_asset_path input_string
       asset_path_string = remove_image asset_path_string
       asset_path_string = remove_leading_slash asset_path_string
+      asset_path_string = remove_query_string asset_path_string
       add_quotes asset_path_string
     end
 
@@ -18,6 +19,10 @@ module AssetManifesto
 
     def remove_leading_slash input_string
       input_string.gsub(/asset_path ([\'|\"]?)\//){"asset_path #{$1}"}
+    end
+    
+    def remove_query_string input_string
+      input_string.gsub(/\?.* %>\)/, ' %>)')
     end
 
     def add_quotes input_string

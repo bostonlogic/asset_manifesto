@@ -30,6 +30,20 @@ module AssetManifesto
         FileUtils.mv(temp_stylesheet.path, stylesheet_path)
         puts " - #{stylesheet_path} processed, verify that everything is as expected"
       end
+      
+      def strip_query_strings
+        asset_path_injector = AssetPathInjector.new
+        Dir.glob("#{Rails.root}/app/assets/stylesheets/**/*.erb").each do |stylesheet_file_path|
+          puts "Processing #{stylesheet_file_path}..."
+          temp_stylesheet = Tempfile.new('temp_stylesheet.css.erb')
+          File.open(stylesheet_file, 'r') do |file|
+            file.lines{|line| temp_stylesheet.puts asset_path_injector.remove_query_string line }
+          end
+          temp_stylesheet.close
+          FileUtils.mv(temp_stylesheet.path, stylesheet_file_path)
+          puts " - #{stylesheet} processed :)"
+        end
+      end
 
       def create_manifests
         stylesheet_assets.each do |stylesheet_manifest|

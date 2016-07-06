@@ -30,6 +30,13 @@ class AssetManifesto::AssetPathInjectorTest < Minitest::Test
       
       assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
     end
+    
+    def test_it_handles_multi_line_strings
+      input = 'src:url("/images/themes/stowe_realty_34/fonts/f0052336-792e-4fcf-8750-fe6d7d5dccba.eot?#iefix") format("eot"),url("/images/themes/stowe_realty_34/fonts/1b696b29-a6bd-4411-a50f-37fd8a209b36.woff") format("woff"),url("/images/themes/stowe_realty_34/fonts/a3931c31-5998-4dbd-b7d5-d310e4ed3d60.ttf") format("truetype"),url("/images/themes/stowe_realty_34/fonts/6779412d-2ea7-4f1a-acfd-f6a527baaee7.svg#6779412d-2ea7-4f1a-acfd-f6a527baaee7") format("svg");'
+      output = 'src:url(<%= asset_path "themes/stowe_realty_34/fonts/f0052336-792e-4fcf-8750-fe6d7d5dccba.eot" %>) format("eot"),url(<%= asset_path "themes/stowe_realty_34/fonts/1b696b29-a6bd-4411-a50f-37fd8a209b36.woff" %>) format("woff"),url(<%= asset_path "themes/stowe_realty_34/fonts/a3931c31-5998-4dbd-b7d5-d310e4ed3d60.ttf" %>) format("truetype"),url(<%= asset_path "themes/stowe_realty_34/fonts/6779412d-2ea7-4f1a-acfd-f6a527baaee7.svg#6779412d-2ea7-4f1a-acfd-f6a527baaee7" %>) format("svg");'
+      
+      assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
+    end
   end
 
   class DoesNotStartWithImageTest < AssetManifesto::AssetPathInjectorTest
@@ -57,6 +64,13 @@ class AssetManifesto::AssetPathInjectorTest < Minitest::Test
     def test_it_handles_query_strings
       input = "url(themes/windwalker/fonts/EBGaramond-webfont.eot?#iefix) format('embedded-opentype')"
       output = "url(<%= asset_path 'themes/windwalker/fonts/EBGaramond-webfont.eot' %>) format('embedded-opentype')"
+      
+      assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
+    end
+    
+    def test_it_handles_multi_line_strings
+      input = 'src:url("/images/themes/stowe_realty_34/fonts/f0052336-792e-4fcf-8750-fe6d7d5dccba.eot?#iefix") format("eot"),url("/images/themes/stowe_realty_34/fonts/1b696b29-a6bd-4411-a50f-37fd8a209b36.woff") format("woff"),url("/images/themes/stowe_realty_34/fonts/a3931c31-5998-4dbd-b7d5-d310e4ed3d60.ttf") format("truetype"),url("/images/themes/stowe_realty_34/fonts/6779412d-2ea7-4f1a-acfd-f6a527baaee7.svg#6779412d-2ea7-4f1a-acfd-f6a527baaee7") format("svg");'
+      output = 'src:url(<%= asset_path "themes/stowe_realty_34/fonts/f0052336-792e-4fcf-8750-fe6d7d5dccba.eot" %>) format("eot"),url(<%= asset_path "themes/stowe_realty_34/fonts/1b696b29-a6bd-4411-a50f-37fd8a209b36.woff" %>) format("woff"),url(<%= asset_path "themes/stowe_realty_34/fonts/a3931c31-5998-4dbd-b7d5-d310e4ed3d60.ttf" %>) format("truetype"),url(<%= asset_path "themes/stowe_realty_34/fonts/6779412d-2ea7-4f1a-acfd-f6a527baaee7.svg#6779412d-2ea7-4f1a-acfd-f6a527baaee7" %>) format("svg");'
       
       assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
     end

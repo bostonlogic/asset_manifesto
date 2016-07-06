@@ -22,7 +22,7 @@ module AssetManifesto
     end
     
     def remove_query_string input_string
-      input_string.gsub(/\?.* %>\)/, ' %>)')
+      input_string.gsub(/\?[^\"\'\)\s]*/, '')
     end
 
     def add_quotes input_string

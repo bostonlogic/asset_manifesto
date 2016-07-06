@@ -89,4 +89,18 @@ class AssetManifesto::AssetPathInjectorTest < Minitest::Test
     
     assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
   end
+  
+  def test_it_should_ignore_selectors
+    input = '#header, #footer, #navigation-tabs-gutter, #seo-footer {'
+    output = '#header, #footer, #navigation-tabs-gutter, #seo-footer {'
+    
+    assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
+  end
+  
+  def test_it_should_ignore_colors
+    input = 'border-color: #ebf3da;'
+    output = 'border-color: #ebf3da;'
+    
+    assert_equal output, AssetManifesto::AssetPathInjector.to_asset_pipeline(input)
+  end
 end

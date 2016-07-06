@@ -22,7 +22,17 @@ module AssetManifesto
     end
     
     def remove_query_string input_string
-      input_string.match(/http|expression/) ? input_string : input_string.gsub(/(\?|#)[^\"\'\)\s]*/, "")
+      if input_string.match(/http|expression|this.origBg\?|content: "\?"|svg#printer|desaturate.svg#greyscale/)
+        input_string
+      else
+        input_string.gsub(/(\?|svg#)[^\"\'\)\s]*/) do |match|
+          if match =~ /svg#.*/
+            'svg'
+          else
+            ''
+          end
+        end
+      end
     end
 
     def add_quotes input_string

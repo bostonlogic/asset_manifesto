@@ -11,9 +11,10 @@ module AssetManifesto
           relative_path = stylesheet.split('/public/').last
           temp_stylesheet = Tempfile.new('temp_stylesheet.css')
           File.open(stylesheet, 'r') do |file|
-            file.lines{|line| temp_stylesheet.puts AssetPathInjector.to_asset_pipeline line }
+            file.each_line{|line| temp_stylesheet.puts AssetPathInjector.to_asset_pipeline line }
           end
           temp_stylesheet.close
+          FileUtils.mkdir_p("#{Rails.root}/app/assets/#{relative_path.split('/')[0..-2].join('/')}")
           FileUtils.mv(temp_stylesheet.path, "#{Rails.root}/app/assets/#{relative_path}.erb")
           puts " - #{stylesheet} processed, it is now #{Rails.root}/app/assets/#{relative_path}.erb"
           puts " - You should verify the processed file, and then delete the source file"
@@ -24,7 +25,7 @@ module AssetManifesto
         puts "Processing #{stylesheet_path}..."
         temp_stylesheet = Tempfile.new('temp_stylesheet.css')
         File.open(stylesheet_path, 'r') do |file|
-          file.lines{|line| temp_stylesheet.puts AssetPathInjector.to_asset_pipeline line }
+          file.each_line{|line| temp_stylesheet.puts AssetPathInjector.to_asset_pipeline line }
         end
         temp_stylesheet.close
         FileUtils.mv(temp_stylesheet.path, stylesheet_path)
@@ -37,7 +38,7 @@ module AssetManifesto
           puts "Processing #{stylesheet_file_path}..."
           temp_stylesheet = Tempfile.new('temp_stylesheet.css.erb')
           File.open(stylesheet_file, 'r') do |file|
-            file.lines{|line| temp_stylesheet.puts asset_path_injector.remove_query_string line }
+            file.each_line{|line| temp_stylesheet.puts asset_path_injector.remove_query_string line }
           end
           temp_stylesheet.close
           FileUtils.mv(temp_stylesheet.path, stylesheet_file_path)
